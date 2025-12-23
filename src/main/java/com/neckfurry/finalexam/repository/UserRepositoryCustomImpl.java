@@ -61,7 +61,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         CriteriaQuery<User> query = cb.createQuery(User.class);
         Root<User> user = query.from(User.class);
         
-        query.where(cb.size(user.get("roles")).ge(minRoles));
+        query.where(cb.greaterThanOrEqualTo(cb.size(user.get("roles")), minRoles));
         
         return entityManager.createQuery(query).getResultList();
     }

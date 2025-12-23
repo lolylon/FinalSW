@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.headers(headers -> headers.frameOptions().sameOrigin());
+        http.headers(headers -> headers.frameOptions().disable());
 
         return http.build();
     }
