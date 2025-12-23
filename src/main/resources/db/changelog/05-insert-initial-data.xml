@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1" author="finalexam">
+        <insert tableName="roles">
+            <column name="name" value="ADMIN"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="name" value="USER"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="2" author="finalexam">
+        <insert tableName="users">
+            <column name="name" value="John Doe"/>
+            <column name="email" value="john@example.com"/>
+        </insert>
+        <insert tableName="users">
+            <column name="name" value="Jane Smith"/>
+            <column name="email" value="jane@example.com"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="3" author="finalexam">
+        <insert tableName="user_roles">
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="1"/>
+        </insert>
+        <insert tableName="user_roles">
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="2"/>
+        </insert>
+        <insert tableName="user_roles">
+            <column name="user_id" value="2"/>
+            <column name="role_id" value="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="4" author="finalexam">
+        <insert tableName="posts">
+            <column name="title" value="First Post"/>
+            <column name="content" value="This is the content of the first post."/>
+            <column name="author_id" value="1"/>
+        </insert>
+        <insert tableName="posts">
+            <column name="title" value="Second Post"/>
+            <column name="content" value="This is the content of the second post."/>
+            <column name="author_id" value="2"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
