@@ -69,7 +69,7 @@ class UserServiceTest {
         when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
         when(userMapper.toUserDto(testUser)).thenReturn(testUserDto);
 
-        Optional<UserDto> result = userService.getUserById(1L);
+        Optional<UserDto> result = Optional.ofNullable(userService.getUserById(1L));
 
         assertTrue(result.isPresent());
         assertEquals(testUserDto.getName(), result.get().getName());
@@ -81,7 +81,7 @@ class UserServiceTest {
     void getUserById_WhenUserNotExists_ShouldReturnEmpty() {
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
-        Optional<UserDto> result = userService.getUserById(1L);
+        Optional<UserDto> result = Optional.ofNullable(userService.getUserById(1L));
 
         assertFalse(result.isPresent());
         verify(userRepository, times(1)).findById(1L);

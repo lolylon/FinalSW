@@ -82,7 +82,7 @@ class PostServiceTest {
         when(postRepository.findById(1L)).thenReturn(Optional.of(testPost));
         when(postMapper.toPostDto(testPost)).thenReturn(testPostDto);
 
-        Optional<PostDto> result = postService.getPostById(1L);
+        Optional<PostDto> result = Optional.ofNullable(postService.getPostById(1L));
 
         assertTrue(result.isPresent());
         assertEquals(testPostDto.getTitle(), result.get().getTitle());
@@ -94,7 +94,7 @@ class PostServiceTest {
     void getPostById_WhenPostNotExists_ShouldReturnEmpty() {
         when(postRepository.findById(1L)).thenReturn(Optional.empty());
 
-        Optional<PostDto> result = postService.getPostById(1L);
+        Optional<PostDto> result = Optional.ofNullable(postService.getPostById(1L));
 
         assertFalse(result.isPresent());
         verify(postRepository, times(1)).findById(1L);

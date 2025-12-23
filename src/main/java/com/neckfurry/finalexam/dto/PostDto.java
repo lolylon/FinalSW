@@ -46,4 +46,14 @@ public class PostDto {
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
     }
+
+    private Long authorId;
+
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
+    }
 }
