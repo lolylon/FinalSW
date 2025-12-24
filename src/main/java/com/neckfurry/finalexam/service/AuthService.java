@@ -5,6 +5,7 @@ import com.neckfurry.finalexam.dto.LoginResponse;
 import com.neckfurry.finalexam.dto.RegisterRequest;
 import com.neckfurry.finalexam.entity.Role;
 import com.neckfurry.finalexam.entity.User;
+import com.neckfurry.finalexam.repository.RoleRepository;
 import com.neckfurry.finalexam.repository.UserRepository;
 import com.neckfurry.finalexam.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class AuthService {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     public LoginResponse login(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -60,8 +64,13 @@ public class AuthService {
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
-        Role userRole = new Role();
-        userRole.setName("USER");
+        Role userRole = roleRepository.findByName("USER")
+                .orElseGet(() -> {
+                    Role newRole = new Role();
+                    newRole.setName("USER");
+                    return roleRepository.save(newRole);
+                });
+        
         user.setRoles(Collections.singleton(userRole));
 
         return userRepository.save(user);

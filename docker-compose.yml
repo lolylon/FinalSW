@@ -1,17 +1,15 @@
-version: '3.8'
-
 services:
   finalexam-app:
     build: .
     ports:
-      - "8080:8080"
+      - "8082:8082"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver
       - SPRING_DATASOURCE_USERNAME=sa
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.H2Dialect
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
-      - SPRING_JPA_SHOW_SQL=true
-      - SPRING_H2_CONSOLE_ENABLED=true
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+      - SPRING_LIQUIBASE_ENABLED=true
+      - SPRING_LIQUIBASE_CHANGE_LOG=classpath:db/changelog/db.changelog-master.xml
     restart: unless-stopped

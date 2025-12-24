@@ -9,5 +9,7 @@
     <include file="03-create-posts-table.xml" relativeToChangelogFile="true"/>
     <include file="04-create-user-roles-join-table.xml" relativeToChangelogFile="true"/>
     <include file="05-insert-initial-data.xml" relativeToChangelogFile="true"/>
+    <include file="06-add-password-to-users.xml" relativeToChangelogFile="true"/>
+    <include file="07-add-timestamps-to-posts.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

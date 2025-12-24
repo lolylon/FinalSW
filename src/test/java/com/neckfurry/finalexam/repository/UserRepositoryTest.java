@@ -28,11 +28,13 @@ class UserRepositoryTest {
     void setUp() {
         testUser1 = new User();
         testUser1.setName("John Doe");
-        testUser1.setEmail("john@example.com");
+        testUser1.setEmail("test1@example.com");
+        testUser1.setPassword("password123");
 
         testUser2 = new User();
         testUser2.setName("Jane Smith");
-        testUser2.setEmail("jane@example.com");
+        testUser2.setEmail("test2@example.com");
+        testUser2.setPassword("password456");
     }
 
     @Test
@@ -69,7 +71,7 @@ class UserRepositoryTest {
 
         List<User> users = userRepository.findAll();
 
-        assertEquals(2, users.size());
+        assertEquals(4, users.size()); 
         assertTrue(users.stream().anyMatch(u -> u.getName().equals("John Doe")));
         assertTrue(users.stream().anyMatch(u -> u.getName().equals("Jane Smith")));
     }

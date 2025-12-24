@@ -23,9 +23,15 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<LoginResponse> register(@RequestBody RegisterRequest registerRequest) {
         User user = authService.register(registerRequest);
-        return ResponseEntity.ok(user);
+        
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail(user.getEmail());
+        loginRequest.setPassword(registerRequest.getPassword());
+        
+        LoginResponse response = authService.login(loginRequest);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/refresh")

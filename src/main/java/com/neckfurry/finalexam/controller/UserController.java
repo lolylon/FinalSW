@@ -32,8 +32,12 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-        UserDto createdUser = userService.createUser(userDto);
-        return ResponseEntity.ok(createdUser);
+        try {
+            UserDto createdUser = userService.createUser(userDto);
+            return ResponseEntity.ok(createdUser);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/{id}")

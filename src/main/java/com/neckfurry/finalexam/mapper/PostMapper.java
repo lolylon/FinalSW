@@ -11,9 +11,12 @@ import java.util.List;
 public interface PostMapper {
     
     @Mapping(target = "authorName", source = "author.name")
+    @Mapping(target = "authorId", source = "author.id")
     PostDto toPostDto(Post post);
     
     @Mapping(target = "author", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     Post toPost(PostDto postDto);
     
     List<PostDto> toPostDtoList(List<Post> posts);

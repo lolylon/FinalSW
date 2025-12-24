@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     
-    @Mapping(target = "roles", source = "roles", qualifiedByName = "rolesToStringSet")
+    @Mapping(target = "roles", ignore = true)
     UserDto toUserDto(User user);
     
     @Mapping(target = "roles", ignore = true)

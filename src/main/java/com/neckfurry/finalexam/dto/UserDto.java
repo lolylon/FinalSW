@@ -6,14 +6,16 @@ public class UserDto {
     private Long id;
     private String name;
     private String email;
+    private String password;
     private Set<String> roles;
 
     public UserDto() {}
 
-    public UserDto(Long id, String name, String email, Set<String> roles) {
+    public UserDto(Long id, String name, String email, String password, Set<String> roles) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.password = password;
         this.roles = roles;
     }
 
@@ -47,5 +49,13 @@ public class UserDto {
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -53,7 +53,7 @@ class UserServiceTest {
         List<UserDto> userDtos = Arrays.asList(testUserDto);
 
         when(userRepository.findAll()).thenReturn(users);
-        when(userMapper.toUserDto(testUser)).thenReturn(testUserDto);
+        when(userMapper.toUserDtoList(users)).thenReturn(userDtos);
 
         List<UserDto> result = userService.getAllUsers();
 
@@ -61,7 +61,7 @@ class UserServiceTest {
         assertEquals(1, result.size());
         assertEquals(testUserDto.getName(), result.get(0).getName());
         verify(userRepository, times(1)).findAll();
-        verify(userMapper, times(1)).toUserDto(testUser);
+        verify(userMapper, times(1)).toUserDtoList(users);
     }
 
     @Test
@@ -105,6 +105,7 @@ class UserServiceTest {
 
     @Test
     void deleteUser_ShouldCallRepositoryDelete() {
+        when(userRepository.existsById(1L)).thenReturn(true);
         doNothing().when(userRepository).deleteById(1L);
 
         userService.deleteUser(1L);

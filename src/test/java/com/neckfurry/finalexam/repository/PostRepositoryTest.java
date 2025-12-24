@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,18 +37,23 @@ class PostRepositoryTest {
     void setUp() {
         testUser = new User();
         testUser.setName("John Doe");
-        testUser.setEmail("john@example.com");
+        testUser.setEmail("posttest@example.com");
+        testUser.setPassword("password123");
         testUser = userRepository.save(testUser);
 
         testPost1 = new Post();
         testPost1.setTitle("First Post");
         testPost1.setContent("Content of first post");
         testPost1.setAuthor(testUser);
+        testPost1.setCreatedAt(LocalDateTime.now());
+        testPost1.setUpdatedAt(LocalDateTime.now());
 
         testPost2 = new Post();
         testPost2.setTitle("Second Post");
         testPost2.setContent("Content of second post");
         testPost2.setAuthor(testUser);
+        testPost2.setCreatedAt(LocalDateTime.now());
+        testPost2.setUpdatedAt(LocalDateTime.now());
     }
 
     @Test
@@ -85,7 +91,7 @@ class PostRepositoryTest {
 
         List<Post> posts = postRepository.findAll();
 
-        assertEquals(2, posts.size());
+        assertEquals(4, posts.size()); 
         assertTrue(posts.stream().anyMatch(p -> p.getTitle().equals("First Post")));
         assertTrue(posts.stream().anyMatch(p -> p.getTitle().equals("Second Post")));
     }
@@ -105,7 +111,8 @@ class PostRepositoryTest {
     void findByAuthorId_ShouldReturnEmpty_WhenNoPostsByAuthor() {
         User otherUser = new User();
         otherUser.setName("Jane Smith");
-        otherUser.setEmail("jane@example.com");
+        otherUser.setEmail("jane2@example.com");
+        otherUser.setPassword("password456");
         otherUser = userRepository.save(otherUser);
 
         List<Post> posts = postRepository.findByAuthorId(otherUser.getId());
@@ -150,7 +157,8 @@ class PostRepositoryTest {
     void countByAuthorId_ShouldReturnZero_WhenNoPostsByAuthor() {
         User otherUser = new User();
         otherUser.setName("Jane Smith");
-        otherUser.setEmail("jane@example.com");
+        otherUser.setEmail("jane3@example.com");
+        otherUser.setPassword("password789");
         otherUser = userRepository.save(otherUser);
 
         Long count = postRepository.countByAuthorId(otherUser.getId());

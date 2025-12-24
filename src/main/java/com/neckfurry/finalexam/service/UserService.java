@@ -6,6 +6,7 @@ import com.neckfurry.finalexam.mapper.UserMapper;
 import com.neckfurry.finalexam.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +20,13 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Transactional
     public List<UserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
         return userMapper.toUserDtoList(users);
     }
 
+    @Transactional
     public UserDto getUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
         return user.map(userMapper::toUserDto).orElse(null);

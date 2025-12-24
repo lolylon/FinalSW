@@ -66,7 +66,7 @@ class PostServiceTest {
         List<PostDto> postDtos = Arrays.asList(testPostDto);
 
         when(postRepository.findAll()).thenReturn(posts);
-        when(postMapper.toPostDto(testPost)).thenReturn(testPostDto);
+        when(postMapper.toPostDtoList(posts)).thenReturn(postDtos);
 
         List<PostDto> result = postService.getAllPosts();
 
@@ -74,7 +74,7 @@ class PostServiceTest {
         assertEquals(1, result.size());
         assertEquals(testPostDto.getTitle(), result.get(0).getTitle());
         verify(postRepository, times(1)).findAll();
-        verify(postMapper, times(1)).toPostDto(testPost);
+        verify(postMapper, times(1)).toPostDtoList(posts);
     }
 
     @Test
@@ -108,7 +108,7 @@ class PostServiceTest {
         when(postRepository.save(testPost)).thenReturn(testPost);
         when(postMapper.toPostDto(testPost)).thenReturn(testPostDto);
 
-        PostDto result = postService.createPost(testPostDto);
+        PostDto result = postService.createPost(testPostDto, 1L);
 
         assertNotNull(result);
         assertEquals(testPostDto.getTitle(), result.getTitle());
@@ -119,10 +119,12 @@ class PostServiceTest {
     }
 
     @Test
-    void createPost_WhenUserNotExists_ShouldThrowException() {
+    void createPost_WhenUserNotExists_ShouldReturnNull() {
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> postService.createPost(testPostDto));
+        PostDto result = postService.createPost(testPostDto, 1L);
+        
+        assertNull(result);
         verify(userRepository, times(1)).findById(1L);
         verify(postMapper, never()).toPost(any());
         verify(postRepository, never()).save(any());
@@ -130,6 +132,7 @@ class PostServiceTest {
 
     @Test
     void deletePost_ShouldCallRepositoryDelete() {
+        when(postRepository.existsById(1L)).thenReturn(true);
         doNothing().when(postRepository).deleteById(1L);
 
         postService.deletePost(1L);

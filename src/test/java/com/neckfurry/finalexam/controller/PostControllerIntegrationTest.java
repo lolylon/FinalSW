@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.LocalDateTime;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -58,13 +60,16 @@ class PostControllerIntegrationTest {
     void getAllPosts_ShouldReturnListOfPosts() throws Exception {
         User user = new User();
         user.setName("John Doe");
-        user.setEmail("john@example.com");
+        user.setEmail("john-post@example.com");
+        user.setPassword("password123");
         user = userRepository.save(user);
 
         Post post = new Post();
         post.setTitle("Test Post");
         post.setContent("Test content");
         post.setAuthor(user);
+        post.setCreatedAt(LocalDateTime.now());
+        post.setUpdatedAt(LocalDateTime.now());
         postRepository.save(post);
 
         mockMvc.perform(get("/api/posts"))
@@ -80,13 +85,16 @@ class PostControllerIntegrationTest {
     void getPostById_WhenPostExists_ShouldReturnPost() throws Exception {
         User user = new User();
         user.setName("John Doe");
-        user.setEmail("john@example.com");
+        user.setEmail("john-post2@example.com");
+        user.setPassword("password123");
         user = userRepository.save(user);
 
         Post post = new Post();
         post.setTitle("Test Post");
         post.setContent("Test content");
         post.setAuthor(user);
+        post.setCreatedAt(LocalDateTime.now());
+        post.setUpdatedAt(LocalDateTime.now());
         post = postRepository.save(post);
 
         mockMvc.perform(get("/api/posts/{id}", post.getId()))
@@ -107,18 +115,19 @@ class PostControllerIntegrationTest {
     void createPost_ShouldReturnCreatedPost() throws Exception {
         User user = new User();
         user.setName("John Doe");
-        user.setEmail("john@example.com");
+        user.setEmail("john-post3@example.com");
+        user.setPassword("password123");
         user = userRepository.save(user);
 
         PostDto postDto = new PostDto();
         postDto.setTitle("New Post");
         postDto.setContent("New content");
-        postDto.setAuthorId(user.getId());
 
         mockMvc.perform(post("/api/posts")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .param("authorId", user.getId().toString())
                         .content(objectMapper.writeValueAsString(postDto)))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.title", is("New Post")))
                 .andExpect(jsonPath("$.content", is("New content")))
@@ -130,10 +139,10 @@ class PostControllerIntegrationTest {
         PostDto postDto = new PostDto();
         postDto.setTitle("New Post");
         postDto.setContent("New content");
-        postDto.setAuthorId(999L);
 
         mockMvc.perform(post("/api/posts")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .param("authorId", "999")
                         .content(objectMapper.writeValueAsString(postDto)))
                 .andExpect(status().isBadRequest());
     }
@@ -142,13 +151,16 @@ class PostControllerIntegrationTest {
     void deletePost_ShouldReturnNoContent() throws Exception {
         User user = new User();
         user.setName("John Doe");
-        user.setEmail("john@example.com");
+        user.setEmail("john-post4@example.com");
+        user.setPassword("password123");
         user = userRepository.save(user);
 
         Post post = new Post();
         post.setTitle("Test Post");
         post.setContent("Test content");
         post.setAuthor(user);
+        post.setCreatedAt(LocalDateTime.now());
+        post.setUpdatedAt(LocalDateTime.now());
         post = postRepository.save(post);
 
         mockMvc.perform(delete("/api/posts/{id}", post.getId()))
